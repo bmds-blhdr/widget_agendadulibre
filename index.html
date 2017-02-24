@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Widget Agenda du Libre</title>
+	<script src="/agendadulibre.js"></script>
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+	<div class="agendadulibre" data-location="Tours" data-distance="20"></div>
+	<div class="agendadulibre" data-location="Angers" data-region="5"></div>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+	agendadulibre.run("http://localhost:${port}/_api/agendadulibre")
+})
+</script>

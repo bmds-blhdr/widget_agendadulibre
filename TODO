@@ -1,0 +1,4 @@
+ - IsoDate: setWeek
+ - devserver: serve dates with specific week number
+ - Model: manage errors
+ - Readme: french translation
