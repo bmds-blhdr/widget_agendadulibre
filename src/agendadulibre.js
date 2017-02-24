@@ -14,8 +14,7 @@ export function run(url, view=View, model=Model, controller=Controller) {
 }
 
 export class Model {
-	constructor(url, parameters_arg) {
-		this.url = url
+	constructor(url, parameters_arg, get=fetch) {
 		this.parametersMap = new Map([
 			["year", "period[year]"],
 			["week", "period[week]"],
@@ -23,6 +22,10 @@ export class Model {
 			["distance", "near[distance]"],
 			["region", "region"],
 		])
+
+		// This allows for testability in node.js through basic dependency injection.
+		this.get = get
+		this.url = url
 
 		const date = new IsoDate()
 		this.parameters = this._sortParameters(parameters_arg)
@@ -65,13 +68,13 @@ export class Model {
 	}
 
 	async fetch() {
-		const parameters = this.parameters
+		const {parameters, get} = this
 		let args = ""
 		for (const [key, parameter] of parameters)
 			 args += `&${this.parametersMap.get(key)}=${parameter}`
 		args = args.substring(1)
 
-		const res = await fetch(`${this.url}?${args}`)
+		const res = await get(`${this.url}?${args}`)
 		const events = res.json()
 
 		for (const event of events) {
