@@ -2,3 +2,5 @@
  - devserver: serve dates with specific week number
  - Model: manage errors
  - Readme: french translation
+ - example of a modification the View
+ - View#render: leave a message in the container block when there is no event, like "*(no events)*", or change the class
