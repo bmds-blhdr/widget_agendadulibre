@@ -4,21 +4,21 @@ import DevServer from "../DevServer"
 import { Model } from "../src/agendadulibre"
 
 const port = 8000
-let devserver
+const host = "localhost"
 
-test.onFinish(() => devserver.close())
+function newDevServer(t) {
+	const devserver = new DevServer()
+	devserver.on("error", t.end)
+	return new Promise(resolve => devserver.listen(port, host, () => resolve(devserver)))
+}
 
-test("devserver starts", t => {
-	try {
-		devserver = new DevServer()
-	} catch(err) {
-		t.end(err)
-	}
-	devserver.on("error", err => t.end(err))
-	devserver.listen(port, () => t.end())
+test("devserver starts", async t => {
+	const srv = await newDevServer(t)
+	srv.close(t.end)
 })
 
 test("devserver serves files", async t => {
+	const srv = await newDevServer(t)
 	const paths = [ "/", "/index.css", "/agendadulibre.js" ]
 	t.plan(paths.length)
 	for (const path of paths) {
@@ -29,17 +29,21 @@ test("devserver serves files", async t => {
 			t.fail(err)
 		}
 	}
+	srv.close(t.end)
 })
 
 test("devserver API endpoint returns valid JSON", async t => {
+	const srv = await newDevServer(t)
+	let err
 	try {
 		const data = await asyncGet(`http://localhost:${port}/_api/agendadulibre`)
 		const events = data.json()
 		t.ok(events instanceof Array)
 		t.ok(events.length)
-		t.end()
-	} catch(err) {
-		t.end(err)
+	} catch(e) {
+		err = e
+	} finally {
+		srv.close(() => t.end(err))
 	}
 })
 
@@ -47,19 +51,24 @@ test("devserver API returns events with the correct keys", async t => {
 	const keys = ["address", "city", "region_id", "start_time", "end_time", "description",
 		"tags", "url", "contact", "title", "id", "place_name", "locality"]
 	keys.sort()
+	const srv = await newDevServer(t)
+	let err
 	try {
 		const data = await asyncGet(`http://localhost:${port}/_api/agendadulibre`)
 		const events = data.json()
 		t.plan(events.length)
 		for (const event of events)
 			t.deepEqual(Object.getOwnPropertyNames(event).sort(), keys)
-	} catch(err) {
-		t.end(err)
+	} catch(e) {
+		err = e
+	} finally {
+		srv.close(() => t.end(err))
 	}
 })
 
 test("devserver API endpoint returns dates of a specific year", async t => {
 	const years = [ 2017, 2016, 2018 ]
+	const srv = await newDevServer(t)
 	let err
 	for (const year of years) {
 		try {
@@ -69,9 +78,10 @@ test("devserver API endpoint returns dates of a specific year", async t => {
 				t.equal(event.start_time.getFullYear(), year)
 		} catch(e) {
 			err = e
+			break
 		}
 	}
-	t.end(err)
+	srv.close(() => t.end(err))
 })
 
 function asyncGet(url) {
