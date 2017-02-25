@@ -8,8 +8,8 @@
   "module": "src/agendadulibre.js",
   "scripts": {
     "build": "rollup -c -f iife -i src/agendadulibre.js -c -o dist/agendadulibre.js",
-    "test": "node dist/test-all.js",
-    "pretest": "npm run build && rollup -c -f cjs -i test/test-all.js -o dist/test-all.js",
+    "test": "tape dist/*.test.js",
+    "pretest": "npm run build && for i in test/*.js; do rollup -c -f cjs -i \"$i\" -o dist/\"$(basename \"$i\")\".test.js; done",
     "start": "node dist/run_devserver.js",
     "prestart": "rollup -c -f cjs -i run_devserver.js -o dist/run_devserver.js ",
     "clean": "rm dist/*.js"
