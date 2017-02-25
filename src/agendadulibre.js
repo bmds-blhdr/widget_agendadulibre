@@ -32,6 +32,8 @@ export class Model {
 		if (this.parameters.has("week"))
 			this._parseParameter("week", date.getWeek.bind(date))
 		this._parseParameter("year", date.getFullYear.bind(date))
+
+		this.date = date
 	}
 
 	_sortParameters(arg, date) {
