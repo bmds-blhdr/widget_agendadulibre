@@ -122,6 +122,8 @@ export class View {
 		if (events.length === 0)
 			return this._empty()
 
+		this._deleteChildren(element)
+
 		const table = subElement(element, "table")
 		const tbody = subElement(table, "tbody")
 
@@ -169,6 +171,11 @@ export class View {
 		const msg = this._subElement(this.element, "span")
 		msg.classList.add("empty")
 		msg.textContent = "Aucun évènement à afficher."
+	}
+
+	_deleteChildren(parent) {
+		while (parent.hasChildNodes())
+			parent.removeChild(parent.firstChild)
 	}
 }
 
