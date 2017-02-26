@@ -27,8 +27,8 @@ Supported arguments are:
 To get the region's id you need to go on agendadulibre.org, select the desired region and look at the query url. `data-week` and `data-year` also accept an addition or a substraction relative to the current year or week, or simply the 'current' keyword:
 
     data-week="current + 3"
-	 data-year="current - 1"
-	 data-week="current"
+    data-year="current - 1"
+    data-week="current"
 
 `data-year="current"` is equivalent to omitting the 'data-year' attribute altogether.
 
