@@ -1,4 +1,3 @@
- - IsoDate: setWeek
  - devserver: serve dates with specific week number
  - Readme: french translation
  - example of a modification the View

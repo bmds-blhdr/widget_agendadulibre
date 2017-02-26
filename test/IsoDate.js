@@ -28,3 +28,13 @@ test("IsoDate#getWeek", t => {
 		t.equal(date.getWeek(), week)
 	}
 })
+
+test("IsoDate#setWeek", t => {
+	t.plan(cases.length)
+	for (const [args, week] of cases) {
+		const date = new IsoDate(...args)
+		const week_num = date.getWeek()
+		date.setWeek(week_num - 10).setWeek(week_num)
+		t.equal(date.getWeek(), week_num)
+	}
+})

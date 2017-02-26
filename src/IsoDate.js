@@ -22,6 +22,12 @@ export default class IsoDate extends Date {
 			&& (this.getDate() === date.getDate())
 	}
 
+	setWeek(num) {
+		const delta_days = (num - this.getWeek()) * 7
+		this.addDays(delta_days)
+		return this
+	}
+
 	getWeek() {
 		const date = this.getFirstWeek()
 		// First approximation, as a day doesn't always have 24 hours in it due to DST.
