@@ -177,6 +177,16 @@ export class View {
 		while (parent.hasChildNodes())
 			parent.removeChild(parent.firstChild)
 	}
+
+	error(msg) {
+		this._deleteChildren(this.element)
+		const err_msg = this._subElement(this.element, "span")
+		err_msg.classList.add("error")
+		err_msg.textContent = msg
+		const retry = this._subElement(this.element, "button")
+		retry.textContent = "Réessayer"
+		return {retry, err_msg}
+	}
 }
 
 export class Controller {
@@ -193,8 +203,13 @@ export class Controller {
 		const {element, view, Model, url} = this
 
 		const model = new Model(url, view.parameters)
-		const events = await model.fetch()
-		view.render(model)
+		try {
+			await model.fetch()
+			view.render(model)
+		} catch(err) {
+			const {retry} = view.error("Échec de connexion.")
+			retry.onclick = () => this.refresh()
+		}
 		return this
 	}
 
