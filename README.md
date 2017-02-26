@@ -1,3 +1,5 @@
+[Traduction française](README.fr.md)
+
 A javascript widget for fetching and displaying [agendadulibre.org](https://agendadulibre.org)'s upcoming events.
 
 # Compatibility
