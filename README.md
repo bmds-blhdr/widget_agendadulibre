@@ -38,6 +38,8 @@ See `index.html` for a complete example that fetches fake data from the developm
 
 # Development
 
+## Building
+
 Change your current directory to the project's folder and type `npm install` to install its dependencies.
 
 The build system uses npm scripts:
@@ -53,4 +55,25 @@ By default the development server listen on localhost on the port 8000; you can 
 
 It serves `index.html`, `dist/agendadulibre.js` and `index.css`; you can modify those files to develop your own customizations of this module or test styles.
 
-You can also build your own init function with the provided modules. The default `run` function accepts (in that order) view, model and controller dependencies. The easiest way to create custom dependencies is to extend those already present. Typically, you might want to override View's `render` function (which takes a Model as its argument) so as to produce custom HTML.
+## Modify how the data is displayed without altering the source code
+
+You can build your own init function with the provided modules. The default `run` function accepts (in that order) view, model and controller dependencies. The easiest way to create custom dependencies is to extend those already present. Typically, you might want to override View's `render` function (which takes a Model as its argument) so as to produce custom HTML.
+
+To change how the fetched data is rendered as html, create a new class that extends `agendadulibre.View` and pass that to `agendadulibre.run` or directly to the controller if you want to write your own replacement for `run`. Here is an example of a modification that filters the events by city and refreshes every minute (from the development server's default port):
+ 
+    <script src="http://localhost:8000/agendadulibre.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const cities = ["Orléans", "Tours", "La Riche", "Blois"]
+        class View extends agendadulibre.View {
+          render(model) {
+            model.events = model.events.filter(event => cities.indexOf(event.city) > -1)
+            return super.render(model)
+          }
+        }
+        const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
+        setTimeout(run, 60000)
+        run()
+      })
+    </script>
+
