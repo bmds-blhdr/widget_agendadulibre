@@ -1,7 +1,6 @@
 import http from "http"
 import test from "tape"
 import DevServer from "../DevServer"
-import { Model } from "../src/agendadulibre"
 
 const port = 8000
 const host = "localhost"
@@ -72,10 +71,12 @@ test("devserver API endpoint returns dates of a specific year", async t => {
 	let err
 	for (const year of years) {
 		try {
-			const model = new Model(`http://localhost:${port}/_api/agendadulibre`, {year}, asyncGet)
-			await model.fetch()
-			for (const event of model.events)
-				t.equal(event.start_time.getFullYear(), year)
+			const response = await asyncGet(`http://localhost:${port}/_api/agendadulibre?period[year]=${year}`)
+			const events = response.json()
+			for (const event of events) {
+				const start_time = new Date(event.start_time)
+				t.equal(start_time.getFullYear(), year)
+			}
 		} catch(e) {
 			err = e
 			break
@@ -89,8 +90,8 @@ function asyncGet(url) {
 	return new Promise((resolve, reject) => {
 		http.get(url, res => {
 			res.on("data", chunk => data += chunk.toString())
-			// Emulates a really basic fetch for Model.
 			res.on("end", () => resolve({
+				// Imitates the fetch API.
 				text() { return data },
 				json() { return JSON.parse(data) }
 			}))
