@@ -119,9 +119,14 @@ export class View {
 		const subElement = this._subElement
 		const caps = this._capitalize
 
+		if (events.length === 0)
+			return this._empty()
+
 		const table = subElement(element, "table")
-		this._tableHeader(table, "Évènement", "Date", "Lieu")
 		const tbody = subElement(table, "tbody")
+
+		if (events.length > 1)
+			this._tableHeader(table, "Évènement", "Date", "Lieu")
 
 		for (const event of events) {
 			const row = subElement(tbody, "tr")
@@ -158,6 +163,12 @@ export class View {
 		const tag = document.createElement(tag_name)
 		parent.appendChild(tag)
 		return tag
+	}
+
+	_empty() {
+		const msg = this._subElement(this.element, "span")
+		msg.classList.add("empty")
+		msg.textContent = "Aucun évènement à afficher."
 	}
 }
 
