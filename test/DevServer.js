@@ -1,6 +1,7 @@
 import http from "http"
 import test from "tape"
 import DevServer from "../DevServer"
+import IsoDate from "../src/IsoDate"
 
 const port = 8000
 const host = "localhost"
@@ -76,6 +77,26 @@ test("devserver API endpoint returns dates of a specific year", async t => {
 			for (const event of events) {
 				const start_time = new Date(event.start_time)
 				t.equal(start_time.getFullYear(), year)
+			}
+		} catch(e) {
+			err = e
+			break
+		}
+	}
+	srv.close(() => t.end(err))
+})
+
+test("devserver API endpoint returns dates of a specific week", async t => {
+	const weeks = [ 51, 30, 12 ]
+	const srv = await newDevServer(t)
+	let err
+	for (const week of weeks) {
+		try {
+			const response = await asyncGet(`http://localhost:${port}/_api/agendadulibre?period[week]=${week}`)
+			const events = response.json()
+			for (const event of events) {
+				const start_time = new IsoDate(event.start_time)
+				t.equal(start_time.getWeek(), week)
 			}
 		} catch(e) {
 			err = e

@@ -104,6 +104,8 @@ export default class DevServer extends Server {
 			tags: [],
 		}
 		date.setDate(date.getDate() + random(0, 20))
+		if (typeof week !== "undefined")
+			date.setWeek(week)
 		event.start_time = date.toISOString()
 		date.setHours(date.getHours() + random(1, 48))
 		event.end_time = date.toISOString()
