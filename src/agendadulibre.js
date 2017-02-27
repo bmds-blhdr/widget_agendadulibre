@@ -1,6 +1,8 @@
 import IsoDate from "./IsoDate"
 import fetch from "./fetch"
 
+export const version = "1.0.0"
+
 // Can be called with the following:
 //	document.addEventListener("DOMContentLoaded", () => run("http://localhost:800/_api/agendadulibre"))
 // The view is (optionally) passed first after the url so as to make easier to use a modified view class.
