@@ -2,7 +2,7 @@ import IsoDate from "./IsoDate"
 import fetch from "./fetch"
 
 // Can be called with the following:
-//	document.addEventListener("DOMContentLoaded", () => run("https://agendadulibre.org/events.json"))
+//	document.addEventListener("DOMContentLoaded", () => run("http://localhost:800/_api/agendadulibre"))
 // The view is (optionally) passed first after the url so as to make easier to use a modified view class.
 export function run(url, view=View, model=Model, controller=Controller) {
 	const elements = document.getElementsByClassName("agendadulibre")
