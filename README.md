@@ -81,7 +81,7 @@ To change how the fetched data is rendered as html, create a new class that exte
       }
     }
     const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
-    setTimeout(run, 60000)
+    setInterval(run, 60000)
     run()
   })
 </script>

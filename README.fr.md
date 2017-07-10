@@ -77,7 +77,7 @@ Pour modifier le rendu des données, créez une classe qui étend `agendadulibre
       }
     }
     const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
-    setTimeout(run, 60000)
+    setInterval(run, 60000)
     run()
   })
 </script>
