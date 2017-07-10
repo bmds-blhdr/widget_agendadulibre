@@ -18,6 +18,6 @@
     "rollup": "^0.41.4",
     "rollup-plugin-async": "^1.2.0",
     "rollup-plugin-cleanup": "^1.0.0",
-    "tape": "^4.6.3"
+    "tape": "^4.7.0"
   }
 }

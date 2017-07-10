@@ -8,11 +8,15 @@ Ce widget n'est compatible qu'avec les navigateurs supportant les fonctionnalit�
 
 `dist/agendadulibre.js` contient un script prêt à l'emploi qui injecte un objet `agendadulibre` dans le contexte global. Pour l'utiliser, vous passez à sa fonction `run` l'addresse de l'API d'agendadulibre (https://agendadulibre.org/events.json) quand le document est prêt. Exemple :
 
-    document.addEventListener("DOMContentLoaded", () => agendadulibre.run("https://agendadulibre.org/events.json"))
+```javascript
+document.addEventListener("DOMContentLoaded", () => agendadulibre.run("https://agendadulibre.org/events.json"))
+```
 
 Cette fonction `run` va utiliser toute balise qui a la classe « agendadulibre » pour y afficher les données. Les attributs "data" sont utilisés pour récuperer d'éventuels paramètres à passer à l'API d'agendadulibre.org. Voici un exemple qui récupère les évènements à 20km de Tours pour l'année courante :
 
-    <div class="agendadulibre" data-location="Tours" data-distance="20"></div>
+```html
+<div class="agendadulibre" data-location="Tours" data-distance="20"></div>
+```
 
 Les paramètres supportés sont :
 
@@ -26,9 +30,11 @@ Les paramètres supportés sont :
 
 Pour l'id de la région, vous devez aller sur agendadulibre.org, sélectioner la région souhaitée et trouver à quoi elle correspond dans l'addresse qui récupère les évènements. `data-week` et `data-year` acceptent d'autre part une adition ou une soustraction relative à l'année courante ou à la semaine courante, ou simplement le mot-clé « current »:
 
-    data-week="current + 3"
-    data-year="current - 1"
-    data-week="current"
+```html
+data-week="current + 3"
+data-year="current - 1"
+data-week="current"
+```
 
 `data-year="current"` revient à ne pas mettre l'attribut `data-year`.
 
@@ -44,7 +50,7 @@ Changez de dossier courant pour aller dans celui de ce projet et utilisez `npm i
 
 Le système de build utilise des scripts npm :
 
-| Command         | Description                             |
+| Commande        | Description                             |
 |:--------------- | ---------------------------------------:|
 | `npm test`      | crée et lance les tests                 |
 | `npm run build` | génération pour les navigateurs         |
@@ -58,20 +64,21 @@ Par défaut le serveur de développement écoute sur localhost, port 8000 ; vous
 Vous pouvez créer votre propre fonction d'init avec les modules fournis. La fonction par défaut, `run` accepte, dans cet ordre, View, Model et Controller. La manière la plus simple de créer des dépendances différentes est d'étendre celles déjà présentes et de les passer à Controller ou `run`. Par exemple, on modifiera la méthode `render` de View (qui prend un Model comme argument) pour produire du HTML différent.
 
 Pour modifier le rendu des données, créez une classe qui étend `agendadulibre.View` et passez-la à `agendadulibre.run` ou directement à Controller si vous faites un remplacement pour `run`. Voici un exemple qui filtre les évènements par ville et rafraîchit toutes les minutes (utilise le serveur de développement sur son port par défaut):
- 
-    <script src="http://localhost:8000/agendadulibre.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const cities = ["Orléans", "Tours", "La Riche", "Blois"]
-        class View extends agendadulibre.View {
-          render(model) {
-            model.events = model.events.filter(event => cities.indexOf(event.city) > -1)
-            return super.render(model)
-          }
-        }
-        const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
-        setTimeout(run, 60000)
-        run()
-      })
-    </script>
 
+```html
+<script src="http://localhost:8000/agendadulibre.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cities = ["Orléans", "Tours", "La Riche", "Blois"]
+    class View extends agendadulibre.View {
+      render(model) {
+        model.events = model.events.filter(event => cities.indexOf(event.city) > -1)
+        return super.render(model)
+      }
+    }
+    const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
+    setTimeout(run, 60000)
+    run()
+  })
+</script>
+```

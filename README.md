@@ -10,11 +10,15 @@ The targeted browsers need to support ES2015 features, except import/export stat
 
 `dist/agendadulibre.js` contains a pre-built, self-contained script which injects an `agendadulibre` object in the global scope. You can then pass to its `run` function the url of the endpoint (https://agendadulibre.org/events.json) when the document is ready, like so:
 
-    document.addEventListener("DOMContentLoaded", () => agendadulibre.run("https://agendadulibre.org/events.json"))
+```javascript
+document.addEventListener("DOMContentLoaded", () => agendadulibre.run("https://agendadulibre.org/events.json"))
+```
 
 This function will turn any tag that has the class "agendadulibre" into a container to display the fetched events. It uses 'data' attributes as arguments passed to the API of agendadulibre.org; here's an example that fetches any event 20km around Tours for the current year:
 
-    <div class="agendadulibre" data-location="Tours" data-distance="20"></div>
+```html
+<div class="agendadulibre" data-location="Tours" data-distance="20"></div>
+```
 
 Supported arguments are:
 
@@ -28,9 +32,11 @@ Supported arguments are:
 
 To get the region's id you need to go on agendadulibre.org, select the desired region and look at the query url. `data-week` and `data-year` also accept an addition or a substraction relative to the current year or week, or simply the 'current' keyword:
 
-    data-week="current + 3"
-    data-year="current - 1"
-    data-week="current"
+```html
+data-week="current + 3"
+data-year="current - 1"
+data-week="current"
+```
 
 `data-year="current"` is equivalent to omitting the 'data-year' attribute altogether.
 
@@ -62,20 +68,21 @@ It serves `index.html`, `dist/agendadulibre.js` and `index.css`; you can modify 
 You can build your own init function with the provided modules. The default `run` function accepts (in that order) view, model and controller dependencies. The easiest way to create custom dependencies is to extend those already present. Typically, you might want to override View's `render` function (which takes a Model as its argument) so as to produce custom HTML.
 
 To change how the fetched data is rendered as html, create a new class that extends `agendadulibre.View` and pass that to `agendadulibre.run` or directly to the controller if you want to write your own replacement for `run`. Here is an example of a modification that filters the events by city and refreshes every minute (from the development server's default port):
- 
-    <script src="http://localhost:8000/agendadulibre.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const cities = ["Orléans", "Tours", "La Riche", "Blois"]
-        class View extends agendadulibre.View {
-          render(model) {
-            model.events = model.events.filter(event => cities.indexOf(event.city) > -1)
-            return super.render(model)
-          }
-        }
-        const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
-        setTimeout(run, 60000)
-        run()
-      })
-    </script>
 
+```html
+<script src="http://localhost:8000/agendadulibre.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cities = ["Orléans", "Tours", "La Riche", "Blois"]
+    class View extends agendadulibre.View {
+      render(model) {
+        model.events = model.events.filter(event => cities.indexOf(event.city) > -1)
+        return super.render(model)
+      }
+    }
+    const run = () => agendadulibre.run("http://localhost:8000/_api/agendadulibre", View)
+    setTimeout(run, 60000)
+    run()
+  })
+</script>
+```
