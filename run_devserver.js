@@ -5,6 +5,6 @@ const host = process.argv[3] || "localhost"
 
 const srv = new DevServer()
 srv.on("listening", () => {
-	console.log(`Listening on port ${port}, host ${host}.`)
+	console.log(`Listening http://${host}:${port}/`)
 })
 srv.listen({port, host})
