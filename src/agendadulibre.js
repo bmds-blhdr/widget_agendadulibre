@@ -1,7 +1,7 @@
 import IsoDate from "./IsoDate"
 import fetch from "./fetch"
 
-export const version = "1.0.0"
+export const version = "1.1.0"
 
 // Can be called with the following:
 //	document.addEventListener("DOMContentLoaded", () => run("http://localhost:800/_api/agendadulibre"))
@@ -11,7 +11,7 @@ export function run(url, view=View, model=Model, controller=Controller) {
 	for (let i = 0; i < elements.length; i++) {
 		const element = elements[i]
 		const controller = new Controller(element, url, model, view)
-		controller.refresh()
+		controller.refresh().catch(console.error.bind(console))
 	}
 }
 

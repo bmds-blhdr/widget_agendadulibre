@@ -1,6 +1,6 @@
 {
   "name": "widget_agendadulibre",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A javascript widget to display events from agendadulibre.org",
   "author": "Benoît Mendousse",
   "license": "MIT",

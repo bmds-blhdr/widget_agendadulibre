@@ -78,13 +78,13 @@ class FetchResponse {
 	}
 }
 
-const version = "1.0.0";
+const version = "1.1.0";
 function run(url, view=View, model=Model, controller=Controller) {
 	const elements = document.getElementsByClassName("agendadulibre");
 	for (let i = 0; i < elements.length; i++) {
 		const element = elements[i];
 		const controller = new Controller(element, url, model, view);
-		controller.refresh();
+		controller.refresh().catch(console.error.bind(console));
 	}
 }
 class Model {
