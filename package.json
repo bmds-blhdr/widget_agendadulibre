@@ -15,9 +15,9 @@
     "clean": "rm dist/*.js"
   },
   "devDependencies": {
-    "rollup": "^0.41.4",
+    "rollup": "^0.58.2",
     "rollup-plugin-async": "^1.2.0",
-    "rollup-plugin-cleanup": "^1.0.0",
-    "tape": "^4.7.0"
+    "rollup-plugin-cleanup": "^2.0.1",
+    "tape": "^4.9.0"
   }
 }

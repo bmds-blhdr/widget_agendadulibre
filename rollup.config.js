@@ -3,6 +3,6 @@ import cleanup from "rollup-plugin-cleanup"
 
 export default {
 	plugins: [ async_to_gen(), cleanup() ],
-	moduleName: "agendadulibre",
+	output: {name: "agendadulibre"},
 	external: [ "http", "fs", "url", "stream", "tape" ]
 }
